@@ -8,13 +8,13 @@ import com.flolecinc.inkvitebackend.tattoos.projects.TattooProjectService;
 import com.flolecinc.inkvitebackend.tattoos.references.TattooReferenceService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 @AllArgsConstructor
 public class RequestFormService {
-
 
     private TattooClientService tattooClientService;
     private TattooProjectService tattooProjectService;
@@ -26,6 +26,7 @@ public class RequestFormService {
      * @param artist The artist the client want to connect with for his project
      * @param requestForm The request form that the client filled and sent
      */
+    @Transactional
     public void handleNewRequestForm(TattooArtistEntity artist, RequestFormDto requestForm) {
         RequestFormDto.IdentityDto identity = requestForm.getIdentity();
         TattooClientEntity client = tattooClientService.saveClientFromIdentity(identity);

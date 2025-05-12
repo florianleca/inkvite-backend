@@ -5,6 +5,7 @@ import com.flolecinc.inkvitebackend.tattoos.clients.TattooClientEntity;
 import com.flolecinc.inkvitebackend.tattoos.requestforms.RequestFormDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @AllArgsConstructor
@@ -12,6 +13,7 @@ public class TattooProjectService {
 
     private TattooProjectRepository tattooProjectRepository;
 
+    @Transactional
     public TattooProjectEntity saveProjectFromProjectDetails(RequestFormDto.ProjectDetailsDto projectDetails,
                                                              TattooArtistEntity tattooArtist,
                                                              TattooClientEntity tattooClient) {

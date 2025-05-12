@@ -4,6 +4,7 @@ import com.flolecinc.inkvitebackend.tattoos.projects.TattooProjectEntity;
 import com.flolecinc.inkvitebackend.tattoos.requestforms.RequestFormDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -13,6 +14,7 @@ public class TattooReferenceService {
 
     private TattooReferenceRepository tattooReferenceRepository;
 
+    @Transactional
     public void saveReferencesFromFormReferences(List<RequestFormDto.ReferenceDto> referenceDtos,
                                                  TattooProjectEntity project) {
         List<TattooReferenceEntity> references = referenceDtos.stream()
