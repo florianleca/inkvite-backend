@@ -15,6 +15,11 @@ java {
     }
 }
 
+// Deactivates the default jar task that creates the *-plain.jar file
+jar {
+    enabled = false
+}
+
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
