@@ -13,10 +13,10 @@ public class TattooClientService {
 
     @Transactional
     public TattooClientEntity saveClientFromIdentity(RequestFormDto.IdentityDto identity) {
-        TattooClientEntity client = new TattooClientEntity();
-        client.setFirstName(identity.getFirstName());
-        client.setLastName(identity.getLastName());
-        client.setEmail(identity.getEmail());
+        TattooClientEntity client = new TattooClientEntity(
+                identity.getFirstName(),
+                identity.getLastName(),
+                identity.getEmail());
         return tattooClientRepository.save(client);
     }
 

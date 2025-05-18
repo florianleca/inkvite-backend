@@ -3,6 +3,7 @@ package com.flolecinc.inkvitebackend.tattoos.artists;
 import com.flolecinc.inkvitebackend.tattoos.projects.TattooProjectEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.UUID;
 @Table(name = "tattoo_artists", schema = "public")
 @Getter
 @Setter
+@NoArgsConstructor
 public class TattooArtistEntity {
 
     @Id
@@ -27,5 +29,10 @@ public class TattooArtistEntity {
 
     @OneToMany(mappedBy = "tattooArtist", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TattooProjectEntity> projects;
+
+    public TattooArtistEntity(String username, String displayName) {
+        this.username = username;
+        this.displayName = displayName;
+    }
 
 }

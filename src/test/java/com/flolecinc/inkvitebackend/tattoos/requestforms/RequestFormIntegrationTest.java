@@ -8,6 +8,7 @@ import com.flolecinc.inkvitebackend.tattoos.projects.TattooProjectEntity;
 import com.flolecinc.inkvitebackend.tattoos.projects.TattooProjectRepository;
 import com.flolecinc.inkvitebackend.tattoos.references.TattooReferenceEntity;
 import com.flolecinc.inkvitebackend.tattoos.references.TattooReferenceRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -46,23 +47,27 @@ class RequestFormIntegrationTest {
     @Autowired
     private TattooReferenceRepository tattooReferenceRepository;
 
-    @Test
-    void handleNewRequestForm_nominal_tattooProjectSaved() {
-        // Given
-        TattooArtistEntity artist = new TattooArtistEntity();
-        artist.setUsername("andrea_g");
-        artist.setDisplayName("Andrea G.");
-        artist = tattooArtistRepository.save(artist);
+    private TattooArtistEntity artist;
 
+    @BeforeEach
+    void setUp() {
+        // Clean up
+        tattooClientRepository.deleteAll();
+        tattooProjectRepository.deleteAll();
+        tattooReferenceRepository.deleteAll();
+        tattooArtistRepository.deleteAll();
+        // Save an artist
+        TattooArtistEntity newArtist = new TattooArtistEntity("andrea_g", "Andrea G.");
+        artist = tattooArtistRepository.save(newArtist);
+        // Handle new request form
         RequestFormDto.ReferenceDto referenceDto1 = new RequestFormDto.ReferenceDto(
                 "www.example.com/image1.jpg",
                 "My 1st comment");
         RequestFormDto.ReferenceDto referenceDto2 = new RequestFormDto.ReferenceDto(
                 "wwww.example.com/image2.jpg",
                 "My 2nd comment");
-        LocalDate desiredDate = LocalDate.now();
         RequestFormDto.ProjectDetailsDto projectDetails = new RequestFormDto.ProjectDetailsDto(
-                desiredDate,
+                LocalDate.of(2025, 5, 18),
                 "My tattoo description",
                 "My body part",
                 List.of(referenceDto1, referenceDto2));
@@ -71,10 +76,11 @@ class RequestFormIntegrationTest {
                 "Doe",
                 "john.doe@aol.com");
         RequestFormDto requestForm = new RequestFormDto(identity, projectDetails);
-
-        // When
         requestFormService.handleNewRequestForm(artist.getId(), requestForm);
+    }
 
+    @Test
+    void handleNewRequestForm_nominal_tattooProjectSaved() {
         assertEquals(1, tattooClientRepository.count());
         TattooClientEntity client = tattooClientRepository.findAll().get(0);
         assertEquals("John", client.getFirstName());
@@ -85,7 +91,7 @@ class RequestFormIntegrationTest {
         TattooProjectEntity project = tattooProjectRepository.findAll().get(0);
         assertEquals("My tattoo description", project.getProjectDescription());
         assertEquals("My body part", project.getBodyPart());
-        assertEquals(desiredDate, project.getDesiredDate());
+        assertEquals(LocalDate.of(2025, 5, 18), project.getDesiredDate());
         assertEquals(artist.getId(), project.getTattooArtist().getId());
         assertEquals(client.getId(), project.getTattooClient().getId());
 
@@ -98,6 +104,55 @@ class RequestFormIntegrationTest {
         assertEquals("wwww.example.com/image2.jpg", reference2.getImagePath());
         assertEquals("My 2nd comment", reference2.getComment());
         assertEquals(project.getId(), reference2.getTattooProject().getId());
+    }
+
+    @Test
+    void deletingArtistShouldDeleteProjectAndReferences() {
+        // When
+        tattooArtistRepository.deleteAll();
+
+        // Then
+        assertEquals(0, tattooArtistRepository.count());
+        assertEquals(1, tattooClientRepository.count());
+        assertEquals(0, tattooProjectRepository.count());
+        assertEquals(0, tattooReferenceRepository.count());
+    }
+
+    @Test
+    void deletingClientShouldDeleteProjectAndReferences() {
+        // When
+        tattooClientRepository.deleteAll();
+
+        // Then
+        assertEquals(1, tattooArtistRepository.count());
+        assertEquals(0, tattooClientRepository.count());
+        assertEquals(0, tattooProjectRepository.count());
+        assertEquals(0, tattooReferenceRepository.count());
+    }
+
+    @Test
+    void deletingProjectShouldDeleteReferences() {
+        // When
+        tattooProjectRepository.deleteAll();
+
+        // Then
+        assertEquals(1, tattooArtistRepository.count());
+        assertEquals(1, tattooClientRepository.count());
+        assertEquals(0, tattooProjectRepository.count());
+        assertEquals(0, tattooReferenceRepository.count());
+    }
+
+    // Deleting the tattoo reference should not delete the project
+    @Test
+    void deletingReferencesShouldNotDeleteProject() {
+        // When
+        tattooReferenceRepository.deleteAll();
+
+        // Then
+        assertEquals(1, tattooArtistRepository.count());
+        assertEquals(1, tattooClientRepository.count());
+        assertEquals(1, tattooProjectRepository.count());
+        assertEquals(0, tattooReferenceRepository.count());
     }
 
 }
