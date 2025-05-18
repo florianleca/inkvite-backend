@@ -91,11 +91,11 @@ class RequestFormIntegrationTest {
 
         assertEquals(2, tattooReferenceRepository.count());
         TattooReferenceEntity reference1 = tattooReferenceRepository.findAll().get(0);
-        assertEquals("www.example.com/image1.jpg", reference1.getImageLink());
+        assertEquals("www.example.com/image1.jpg", reference1.getImagePath());
         assertEquals("My 1st comment", reference1.getComment());
         assertEquals(project.getId(), reference1.getTattooProject().getId());
         TattooReferenceEntity reference2 = tattooReferenceRepository.findAll().get(1);
-        assertEquals("wwww.example.com/image2.jpg", reference2.getImageLink());
+        assertEquals("wwww.example.com/image2.jpg", reference2.getImagePath());
         assertEquals("My 2nd comment", reference2.getComment());
         assertEquals(project.getId(), reference2.getTattooProject().getId());
     }

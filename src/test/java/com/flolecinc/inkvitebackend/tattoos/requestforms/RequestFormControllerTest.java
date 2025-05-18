@@ -121,8 +121,7 @@ class RequestFormControllerTest {
         // Given
         requestFormDto.getProjectDetails().setReferences(List.of(new RequestFormDto.ReferenceDto()));
         // When & Then
-        invalidRequestHelper("{\"projectDetails.references[0].imagePath\":\"must not be blank\"",
-                "\"projectDetails.references[0].comment\":\"must not be blank\"");
+        invalidRequestHelper("{\"projectDetails.references[0].imagePath\":\"must not be blank\"");
     }
 
     private void invalidRequestHelper(String... messages) throws Exception {

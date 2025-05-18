@@ -18,8 +18,8 @@ public class TattooReferenceEntity {
     @Column(name = "id", nullable = false, updatable = false)
     private UUID id;
 
-    @Column(name = "image_link", nullable = false)
-    private String imageLink;
+    @Column(name = "image_path", nullable = false)
+    private String imagePath;
 
     @Column(name = "comment")
     private String comment;

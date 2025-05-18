@@ -75,7 +75,6 @@ public class RequestFormDto {
         @NotBlank
         private String imagePath;
 
-        @NotBlank
         private String comment;
 
     }

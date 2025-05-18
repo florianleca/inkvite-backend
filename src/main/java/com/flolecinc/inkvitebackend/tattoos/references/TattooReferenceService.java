@@ -20,7 +20,7 @@ public class TattooReferenceService {
         List<TattooReferenceEntity> references = referenceDtos.stream()
                 .map(referenceDto -> {
                     TattooReferenceEntity tattooReference = new TattooReferenceEntity();
-                    tattooReference.setImageLink(referenceDto.getImagePath());
+                    tattooReference.setImagePath(referenceDto.getImagePath());
                     tattooReference.setComment(referenceDto.getComment());
                     tattooReference.setTattooProject(project);
                     return tattooReference;
