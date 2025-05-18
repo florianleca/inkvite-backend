@@ -1,5 +1,10 @@
 package com.flolecinc.inkvitebackend.tattoos.requestforms;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +19,12 @@ import java.util.List;
 @NoArgsConstructor
 public class RequestFormDto {
 
+    @Valid
+    @NotNull
     private IdentityDto identity;
+
+    @Valid
+    @NotNull
     private ProjectDetailsDto projectDetails;
 
     @Getter
@@ -22,10 +32,17 @@ public class RequestFormDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class IdentityDto {
+
+        @NotBlank
         private String firstName;
+
+        @NotBlank
         private String lastName;
+
+        @Email
+        @NotBlank
         private String email;
-        private String phoneNumber;
+
     }
 
     @Getter
@@ -33,10 +50,20 @@ public class RequestFormDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class ProjectDetailsDto {
+
+        @NotNull
         private LocalDate desiredDate;
+
+        @NotBlank
         private String projectDescription;
+
+        @NotBlank
         private String bodyPart;
+
+        @Valid
+        @NotEmpty
         private List<ReferenceDto> references;
+
     }
 
     @Getter
@@ -44,8 +71,13 @@ public class RequestFormDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class ReferenceDto {
-        private String imageLink;
+
+        @NotBlank
+        private String imagePath;
+
+        @NotBlank
         private String comment;
+
     }
 
 }

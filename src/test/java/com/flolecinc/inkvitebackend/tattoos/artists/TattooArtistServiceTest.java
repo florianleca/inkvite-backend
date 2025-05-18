@@ -1,5 +1,6 @@
 package com.flolecinc.inkvitebackend.tattoos.artists;
 
+import com.flolecinc.inkvitebackend.exceptions.TattooArtistNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -9,8 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -31,11 +31,10 @@ class TattooArtistServiceTest {
         when(tattooArtistRepository.findById(artistId)).thenReturn(Optional.of(artist));
 
         // When
-        Optional<TattooArtistEntity> result = tattooArtistService.retrieveTattooArtist(artistId);
+        TattooArtistEntity result = tattooArtistService.retrieveTattooArtist(artistId);
 
         // Then
-        assertTrue(result.isPresent());
-        assertEquals(artist, result.get());
+        assertEquals(artist, result);
         verify(tattooArtistRepository).findById(artistId);
     }
 
@@ -45,11 +44,8 @@ class TattooArtistServiceTest {
         UUID artistId = UUID.randomUUID();
         when(tattooArtistRepository.findById(artistId)).thenReturn(Optional.empty());
 
-        // When
-        Optional<TattooArtistEntity> result = tattooArtistService.retrieveTattooArtist(artistId);
-
-        // Then
-        assertTrue(result.isEmpty());
+        // When & Then
+        assertThrows(TattooArtistNotFoundException.class, () -> tattooArtistService.retrieveTattooArtist(artistId));
         verify(tattooArtistRepository).findById(artistId);
     }
 

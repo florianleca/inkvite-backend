@@ -28,9 +28,6 @@ public class TattooClientEntity {
     @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "phone_number", nullable = false)
-    private String phoneNumber;
-
     @OneToMany(mappedBy = "tattooClient", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TattooProjectEntity> projects;
 

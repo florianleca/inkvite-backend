@@ -17,7 +17,6 @@ public class TattooClientService {
         client.setFirstName(identity.getFirstName());
         client.setLastName(identity.getLastName());
         client.setEmail(identity.getEmail());
-        client.setPhoneNumber(identity.getPhoneNumber());
         return tattooClientRepository.save(client);
     }
 

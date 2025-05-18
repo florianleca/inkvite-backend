@@ -1,6 +1,7 @@
 package com.flolecinc.inkvitebackend.tattoos.requestforms;
 
 import com.flolecinc.inkvitebackend.tattoos.artists.TattooArtistEntity;
+import com.flolecinc.inkvitebackend.tattoos.artists.TattooArtistService;
 import com.flolecinc.inkvitebackend.tattoos.clients.TattooClientEntity;
 import com.flolecinc.inkvitebackend.tattoos.clients.TattooClientService;
 import com.flolecinc.inkvitebackend.tattoos.projects.TattooProjectEntity;
@@ -11,11 +12,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
 public class RequestFormService {
 
+    private TattooArtistService tattooArtistService;
     private TattooClientService tattooClientService;
     private TattooProjectService tattooProjectService;
     private TattooReferenceService tattooReferenceService;
@@ -23,11 +26,13 @@ public class RequestFormService {
     /**
      * Saving a new tattoo project (and associated references) after receiving a request form.
      *
-     * @param artist The artist the client want to connect with for his project
+     * @param tattooArtistId The ID of the artist with whom the client wants to connect for his project
      * @param requestForm The request form that the client filled and sent
      */
     @Transactional
-    public void handleNewRequestForm(TattooArtistEntity artist, RequestFormDto requestForm) {
+    public void handleNewRequestForm(UUID tattooArtistId, RequestFormDto requestForm) {
+        TattooArtistEntity artist = tattooArtistService.retrieveTattooArtist(tattooArtistId);
+
         RequestFormDto.IdentityDto identity = requestForm.getIdentity();
         TattooClientEntity client = tattooClientService.saveClientFromIdentity(identity);
 

@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @Testcontainers
 @SpringBootTest
 @ActiveProfiles("test")
-class RequestFormServiceIntegrationTest {
+class RequestFormIntegrationTest {
 
     @Container
     @ServiceConnection
@@ -69,20 +69,17 @@ class RequestFormServiceIntegrationTest {
         RequestFormDto.IdentityDto identity = new RequestFormDto.IdentityDto(
                 "John",
                 "Doe",
-                "john.doe@aol.com",
-                "1234567890");
+                "john.doe@aol.com");
         RequestFormDto requestForm = new RequestFormDto(identity, projectDetails);
 
         // When
-        requestFormService.handleNewRequestForm(artist, requestForm);
+        requestFormService.handleNewRequestForm(artist.getId(), requestForm);
 
-        // Then
         assertEquals(1, tattooClientRepository.count());
         TattooClientEntity client = tattooClientRepository.findAll().get(0);
         assertEquals("John", client.getFirstName());
         assertEquals("Doe", client.getLastName());
         assertEquals("john.doe@aol.com", client.getEmail());
-        assertEquals("1234567890", client.getPhoneNumber());
 
         assertEquals(1, tattooProjectRepository.count());
         TattooProjectEntity project = tattooProjectRepository.findAll().get(0);

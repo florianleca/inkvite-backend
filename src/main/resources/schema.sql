@@ -14,7 +14,6 @@ create table public.tattoo_clients
     first_name   text not null,
     last_name    text not null,
     email        text not null,
-    phone_number text not null,
     constraint tattoo_clients_pkey primary key (id)
 ) TABLESPACE pg_default;
 
