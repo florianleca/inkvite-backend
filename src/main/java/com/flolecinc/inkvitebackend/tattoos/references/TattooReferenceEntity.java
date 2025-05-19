@@ -2,7 +2,9 @@ package com.flolecinc.inkvitebackend.tattoos.references;
 
 import com.flolecinc.inkvitebackend.tattoos.projects.TattooProjectEntity;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.UUID;
@@ -11,6 +13,7 @@ import java.util.UUID;
 @Table(name = "tattoo_references", schema = "public")
 @Getter
 @Setter
+@NoArgsConstructor
 public class TattooReferenceEntity {
 
     @Id
@@ -18,6 +21,7 @@ public class TattooReferenceEntity {
     @Column(name = "id", nullable = false, updatable = false)
     private UUID id;
 
+    @NotBlank
     @Column(name = "image_path", nullable = false)
     private String imagePath;
 

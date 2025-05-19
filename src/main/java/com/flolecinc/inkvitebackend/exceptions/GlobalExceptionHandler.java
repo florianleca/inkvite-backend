@@ -2,11 +2,11 @@ package com.flolecinc.inkvitebackend.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,13 +25,17 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(TattooArtistNotFoundException.class)
     public ResponseEntity<Map<String, String>> handleTattooArtistNotFoundException(TattooArtistNotFoundException exception) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(Map.of("error", exception.getMessage()));
+                .body(createErrorBody(exception));
     }
 
-    @ExceptionHandler(DateTimeParseException.class)
-    public ResponseEntity<Map<String, String>> handleDateTimeParseException(DateTimeParseException exception) {
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<Map<String, String>> handleHttpMessageNotReadableException(HttpMessageNotReadableException exception) {
         return ResponseEntity.badRequest()
-                .body(Map.of("error", exception.getMessage()));
+                .body(createErrorBody(exception));
+    }
+
+    private Map<String, String> createErrorBody(Exception exception) {
+        return Map.of("error", exception.getMessage());
     }
 
 }

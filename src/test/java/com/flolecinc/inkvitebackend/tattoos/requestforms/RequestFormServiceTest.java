@@ -6,6 +6,7 @@ import com.flolecinc.inkvitebackend.tattoos.clients.TattooClientEntity;
 import com.flolecinc.inkvitebackend.tattoos.clients.TattooClientService;
 import com.flolecinc.inkvitebackend.tattoos.projects.TattooProjectEntity;
 import com.flolecinc.inkvitebackend.tattoos.projects.TattooProjectService;
+import com.flolecinc.inkvitebackend.tattoos.references.TattooReferenceEntity;
 import com.flolecinc.inkvitebackend.tattoos.references.TattooReferenceService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -46,13 +47,13 @@ class RequestFormServiceTest {
         RequestFormDto requestForm = new RequestFormDto();
         RequestFormDto.IdentityDto identity = new RequestFormDto.IdentityDto();
         RequestFormDto.ProjectDetailsDto projectDetails = new RequestFormDto.ProjectDetailsDto();
-        RequestFormDto.ReferenceDto referenceDto1 = new RequestFormDto.ReferenceDto();
-        RequestFormDto.ReferenceDto referenceDto2 = new RequestFormDto.ReferenceDto();
+        TattooReferenceEntity reference1 = new TattooReferenceEntity();
+        TattooReferenceEntity reference2 = new TattooReferenceEntity();
         TattooClientEntity client = new TattooClientEntity();
         TattooProjectEntity project = new TattooProjectEntity();
         requestForm.setIdentity(identity);
         requestForm.setProjectDetails(projectDetails);
-        projectDetails.setReferences(List.of(referenceDto1, referenceDto2));
+        projectDetails.setReferences(List.of(reference1, reference2));
         when(tattooArtistService.retrieveTattooArtist(artistId)).thenReturn(artist);
         when(tattooClientService.saveClientFromIdentity(identity)).thenReturn(client);
         when(tattooProjectService.saveProjectFromProjectDetails(projectDetails, artist, client)).thenReturn(project);
@@ -64,7 +65,7 @@ class RequestFormServiceTest {
         verify(tattooArtistService).retrieveTattooArtist(artistId);
         verify(tattooClientService).saveClientFromIdentity(identity);
         verify(tattooProjectService).saveProjectFromProjectDetails(projectDetails, artist, client);
-        verify(tattooReferenceService).saveReferencesFromFormReferences(List.of(referenceDto1, referenceDto2), project);
+        verify(tattooReferenceService).saveReferencesFromFormReferences(List.of(reference1, reference2), project);
     }
 
 }

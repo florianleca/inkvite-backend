@@ -6,6 +6,7 @@ import com.flolecinc.inkvitebackend.tattoos.clients.TattooClientEntity;
 import com.flolecinc.inkvitebackend.tattoos.clients.TattooClientService;
 import com.flolecinc.inkvitebackend.tattoos.projects.TattooProjectEntity;
 import com.flolecinc.inkvitebackend.tattoos.projects.TattooProjectService;
+import com.flolecinc.inkvitebackend.tattoos.references.TattooReferenceEntity;
 import com.flolecinc.inkvitebackend.tattoos.references.TattooReferenceService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -39,7 +40,7 @@ public class RequestFormService {
         RequestFormDto.ProjectDetailsDto projectDetails = requestForm.getProjectDetails();
         TattooProjectEntity project = tattooProjectService.saveProjectFromProjectDetails(projectDetails, artist, client);
 
-        List<RequestFormDto.ReferenceDto> referenceDtos = requestForm.getProjectDetails().getReferences();
+        List<TattooReferenceEntity> referenceDtos = requestForm.getProjectDetails().getReferences();
         tattooReferenceService.saveReferencesFromFormReferences(referenceDtos, project);
     }
 

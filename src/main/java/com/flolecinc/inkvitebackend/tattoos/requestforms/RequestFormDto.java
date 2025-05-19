@@ -1,5 +1,6 @@
 package com.flolecinc.inkvitebackend.tattoos.requestforms;
 
+import com.flolecinc.inkvitebackend.tattoos.references.TattooReferenceEntity;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -62,20 +63,7 @@ public class RequestFormDto {
 
         @Valid
         @NotEmpty
-        private List<ReferenceDto> references;
-
-    }
-
-    @Getter
-    @Setter
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class ReferenceDto {
-
-        @NotBlank
-        private String imagePath;
-
-        private String comment;
+        private List<TattooReferenceEntity> references;
 
     }
 

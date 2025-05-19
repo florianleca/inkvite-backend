@@ -1,0 +1,22 @@
+{
+  "identity": {
+    "firstName": "John",
+    "lastName": "Doe",
+    "email": "john.doe@aol.com"
+  },
+  "projectDetails": {
+    "desiredDate": "2025-05-18",
+    "projectDescription": "Japonese dragon",
+    "bodyPart": "Left shoulder",
+    "references": [
+      {
+        "imagePath": "image1.jpg",
+        "comment": "J'aime la forme"
+      },
+      {
+        "imagePath": "image2.jpg",
+        "comment": "Je n'aime pas la couleur"
+      }
+    ]
+  }
+}
