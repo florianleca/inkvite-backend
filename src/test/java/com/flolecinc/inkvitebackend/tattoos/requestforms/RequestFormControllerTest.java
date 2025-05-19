@@ -2,6 +2,7 @@ package com.flolecinc.inkvitebackend.tattoos.requestforms;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flolecinc.inkvitebackend.exceptions.TattooArtistNotFoundException;
+import com.flolecinc.inkvitebackend.tattoos.projects.TattooProjectEntity;
 import com.flolecinc.inkvitebackend.tattoos.references.TattooReferenceEntity;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -145,7 +146,7 @@ class RequestFormControllerTest {
     void postNewTattooRequest_nullProjectDetailsFields_exceptionHandledAndStatusBadRequest() throws Exception {
         // Given
         RequestFormDto requestFormDto = objectMapper.readValue(jsonBody, RequestFormDto.class);
-        requestFormDto.setProjectDetails(new RequestFormDto.ProjectDetailsDto());
+        requestFormDto.setProjectDetails(new TattooProjectEntity());
         String badJson = objectMapper.writeValueAsString(requestFormDto);
 
         // When & Then

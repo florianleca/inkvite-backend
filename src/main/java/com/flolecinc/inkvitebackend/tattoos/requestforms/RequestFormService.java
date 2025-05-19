@@ -37,8 +37,8 @@ public class RequestFormService {
         RequestFormDto.IdentityDto identity = requestForm.getIdentity();
         TattooClientEntity client = tattooClientService.saveClientFromIdentity(identity);
 
-        RequestFormDto.ProjectDetailsDto projectDetails = requestForm.getProjectDetails();
-        TattooProjectEntity project = tattooProjectService.saveProjectFromProjectDetails(projectDetails, artist, client);
+        TattooProjectEntity project = requestForm.getProjectDetails();
+        project = tattooProjectService.saveProjectFromProjectDetails(project, artist, client);
 
         List<TattooReferenceEntity> referenceDtos = requestForm.getProjectDetails().getReferences();
         tattooReferenceService.saveReferencesFromFormReferences(referenceDtos, project);
