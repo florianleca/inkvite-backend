@@ -27,21 +27,21 @@ public class RequestFormService {
     /**
      * Saving a new tattoo project (and associated references) after receiving a request form.
      *
-     * @param tattooArtistId The ID of the artist with whom the client wants to connect for his project
+     * @param tattooArtistId The ID of the desired artist
      * @param requestForm The request form that the client filled and sent
      */
     @Transactional
-    public void handleNewRequestForm(UUID tattooArtistId, RequestFormDto requestForm) {
+    public void handleRequestForm(UUID tattooArtistId, RequestFormDto requestForm) {
         TattooArtistEntity artist = tattooArtistService.retrieveTattooArtist(tattooArtistId);
 
-        RequestFormDto.IdentityDto identity = requestForm.getIdentity();
-        TattooClientEntity client = tattooClientService.saveClientFromIdentity(identity);
+        TattooClientEntity client = requestForm.getIdentity();
+        client = tattooClientService.saveClient(client);
 
         TattooProjectEntity project = requestForm.getProjectDetails();
-        project = tattooProjectService.saveProjectFromProjectDetails(project, artist, client);
+        project = tattooProjectService.bindEntitiesAndSaveProject(project, artist, client);
 
         List<TattooReferenceEntity> referenceDtos = requestForm.getProjectDetails().getReferences();
-        tattooReferenceService.saveReferencesFromFormReferences(referenceDtos, project);
+        tattooReferenceService.bindReferencesToProjectAndSaveThem(referenceDtos, project);
     }
 
 }

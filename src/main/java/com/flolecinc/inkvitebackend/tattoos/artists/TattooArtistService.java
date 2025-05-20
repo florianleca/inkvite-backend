@@ -16,7 +16,6 @@ public class TattooArtistService {
         return tattooArtistRepository.findById(tattooArtistId).orElseThrow(
                 () -> new TattooArtistNotFoundException(tattooArtistId)
         );
-
     }
 
 }

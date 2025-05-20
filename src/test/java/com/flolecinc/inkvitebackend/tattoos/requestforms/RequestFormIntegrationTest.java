@@ -136,7 +136,6 @@ class RequestFormIntegrationTest {
         assertEquals(0, tattooReferenceRepository.count());
     }
 
-    // Deleting the tattoo reference should not delete the project
     @Test
     void deletingReferencesShouldNotDeleteProject() {
         // When

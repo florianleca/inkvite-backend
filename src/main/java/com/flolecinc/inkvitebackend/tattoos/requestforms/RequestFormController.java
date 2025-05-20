@@ -16,10 +16,10 @@ public class RequestFormController {
     private RequestFormService requestFormService;
 
     @PostMapping("/{tattooArtistId}")
-    public ResponseEntity<String> createRequest(
+    public ResponseEntity<String> handleRequestForm(
             @PathVariable UUID tattooArtistId,
             @RequestBody @Valid RequestFormDto requestForm) {
-        requestFormService.handleNewRequestForm(tattooArtistId, requestForm);
+        requestFormService.handleRequestForm(tattooArtistId, requestForm);
         return ResponseEntity.status(HttpStatus.CREATED).body("Tattoo project successfully created and saved");
     }
 

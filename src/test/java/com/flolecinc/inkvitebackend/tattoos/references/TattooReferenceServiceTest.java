@@ -9,7 +9,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
@@ -28,10 +28,11 @@ class TattooReferenceServiceTest {
         TattooProjectEntity project = new TattooProjectEntity();
 
         // When
-        tattooReferenceService.saveReferencesFromFormReferences(List.of(reference), project);
+        tattooReferenceService.bindReferencesToProjectAndSaveThem(List.of(reference), project);
 
         // Then
-        verify(tattooReferenceRepository).saveAll(any());
+        verify(tattooReferenceRepository).saveAll(List.of(reference));
+        assertEquals(project, reference.getTattooProject());
     }
 
 }

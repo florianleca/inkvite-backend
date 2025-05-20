@@ -14,8 +14,8 @@ public class TattooReferenceService {
     private TattooReferenceRepository tattooReferenceRepository;
 
     @Transactional
-    public void saveReferencesFromFormReferences(List<TattooReferenceEntity> references,
-                                                 TattooProjectEntity project) {
+    public void bindReferencesToProjectAndSaveThem(List<TattooReferenceEntity> references,
+                                                   TattooProjectEntity project) {
         references.forEach(reference -> reference.setTattooProject(project));
         tattooReferenceRepository.saveAll(references);
     }

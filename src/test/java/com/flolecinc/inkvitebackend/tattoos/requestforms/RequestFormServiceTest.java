@@ -45,26 +45,25 @@ class RequestFormServiceTest {
         TattooArtistEntity artist = new TattooArtistEntity();
         artist.setId(artistId);
         RequestFormDto requestForm = new RequestFormDto();
-        RequestFormDto.IdentityDto identity = new RequestFormDto.IdentityDto();
         TattooReferenceEntity reference1 = new TattooReferenceEntity();
         TattooReferenceEntity reference2 = new TattooReferenceEntity();
         TattooClientEntity client = new TattooClientEntity();
         TattooProjectEntity project = new TattooProjectEntity();
-        requestForm.setIdentity(identity);
+        requestForm.setIdentity(client);
         requestForm.setProjectDetails(project);
         project.setReferences(List.of(reference1, reference2));
         when(tattooArtistService.retrieveTattooArtist(artistId)).thenReturn(artist);
-        when(tattooClientService.saveClientFromIdentity(identity)).thenReturn(client);
-        when(tattooProjectService.saveProjectFromProjectDetails(project, artist, client)).thenReturn(project);
+        when(tattooClientService.saveClient(client)).thenReturn(client);
+        when(tattooProjectService.bindEntitiesAndSaveProject(project, artist, client)).thenReturn(project);
 
         // When
-        requestFormService.handleNewRequestForm(artistId, requestForm);
+        requestFormService.handleRequestForm(artistId, requestForm);
 
         // Then
         verify(tattooArtistService).retrieveTattooArtist(artistId);
-        verify(tattooClientService).saveClientFromIdentity(identity);
-        verify(tattooProjectService).saveProjectFromProjectDetails(project, artist, client);
-        verify(tattooReferenceService).saveReferencesFromFormReferences(List.of(reference1, reference2), project);
+        verify(tattooClientService).saveClient(client);
+        verify(tattooProjectService).bindEntitiesAndSaveProject(project, artist, client);
+        verify(tattooReferenceService).bindReferencesToProjectAndSaveThem(List.of(reference1, reference2), project);
     }
 
 }

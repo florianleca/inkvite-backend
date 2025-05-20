@@ -8,7 +8,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.mockito.ArgumentMatchers.any;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
@@ -28,10 +28,12 @@ class TattooProjectServiceTest {
         TattooClientEntity client = new TattooClientEntity();
 
         // When
-        tattooProjectService.saveProjectFromProjectDetails(project, artist, client);
+        tattooProjectService.bindEntitiesAndSaveProject(project, artist, client);
 
         // Then
-        verify(tattooProjectRepository).save(any());
+        verify(tattooProjectRepository).save(project);
+        assertEquals(artist, project.getTattooArtist());
+        assertEquals(client, project.getTattooClient());
     }
 
 }

@@ -62,7 +62,7 @@ class RequestFormControllerTest {
                         .content(jsonBody))
                 .andExpect(status().isCreated())
                 .andExpect(content().string("Tattoo project successfully created and saved"));
-        verify(requestFormService).handleNewRequestForm(eq(artistId), requestFormCaptor.capture());
+        verify(requestFormService).handleRequestForm(eq(artistId), requestFormCaptor.capture());
         RequestFormDto requestForm = requestFormCaptor.getValue();
         assertEquals("John", requestForm.getIdentity().getFirstName());
         assertEquals("Doe", requestForm.getIdentity().getLastName());
@@ -82,7 +82,7 @@ class RequestFormControllerTest {
         // Given
         UUID artistId = UUID.randomUUID();
         // Mocking a thrown exception for trying to retrieve an unknown tattoo artist
-        doThrow(new TattooArtistNotFoundException(artistId)).when(requestFormService).handleNewRequestForm(eq(artistId), any());
+        doThrow(new TattooArtistNotFoundException(artistId)).when(requestFormService).handleRequestForm(eq(artistId), any());
 
         // When & Then
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/tattoos/requests/{tattooArtistId}", artistId)
@@ -91,7 +91,7 @@ class RequestFormControllerTest {
                 .andExpect(status().isNotFound())
                 .andReturn();
         assertEquals("{\"error\":\"Tattoo artist with ID " + artistId + " not found\"}", result.getResponse().getContentAsString());
-        verify(requestFormService).handleNewRequestForm(eq(artistId), any());
+        verify(requestFormService).handleRequestForm(eq(artistId), any());
     }
 
     @Test
