@@ -4,6 +4,10 @@ import com.flolecinc.inkvitebackend.tattoos.artists.TattooArtistEntity;
 import com.flolecinc.inkvitebackend.tattoos.clients.TattooClientEntity;
 import com.flolecinc.inkvitebackend.tattoos.references.TattooReferenceEntity;
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,15 +26,20 @@ public class TattooProjectEntity {
     @Column(name = "id", nullable = false, updatable = false)
     private UUID id;
 
+    @NotNull
     @Column(name = "desired_date", nullable = false)
     private LocalDate desiredDate;
 
+    @NotBlank
     @Column(name = "project_description", nullable = false)
     private String projectDescription;
 
+    @NotBlank
     @Column(name = "body_part", nullable = false)
     private String bodyPart;
 
+    @Valid
+    @NotEmpty
     @OneToMany(mappedBy = "tattooProject", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TattooReferenceEntity> references;
 

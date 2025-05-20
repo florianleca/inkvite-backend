@@ -1,7 +1,6 @@
 package com.flolecinc.inkvitebackend.tattoos.references;
 
 import com.flolecinc.inkvitebackend.tattoos.projects.TattooProjectEntity;
-import com.flolecinc.inkvitebackend.tattoos.requestforms.RequestFormDto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -10,7 +9,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
@@ -25,14 +24,15 @@ class TattooReferenceServiceTest {
     @Test
     void saveReferencesFromFormReferences_nominal_repositoryCalled() {
         // Given
-        RequestFormDto.ReferenceDto referenceDto = new RequestFormDto.ReferenceDto();
+        TattooReferenceEntity reference = new TattooReferenceEntity();
         TattooProjectEntity project = new TattooProjectEntity();
 
         // When
-        tattooReferenceService.saveReferencesFromFormReferences(List.of(referenceDto), project);
+        tattooReferenceService.bindReferencesToProjectAndSaveThem(List.of(reference), project);
 
         // Then
-        verify(tattooReferenceRepository).saveAll(any());
+        verify(tattooReferenceRepository).saveAll(List.of(reference));
+        assertEquals(project, reference.getTattooProject());
     }
 
 }

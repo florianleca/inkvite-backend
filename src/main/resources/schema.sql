@@ -14,7 +14,6 @@ create table public.tattoo_clients
     first_name   text not null,
     last_name    text not null,
     email        text not null,
-    phone_number text not null,
     constraint tattoo_clients_pkey primary key (id)
 ) TABLESPACE pg_default;
 
@@ -34,7 +33,7 @@ create table public.tattoo_projects
 create table public.tattoo_references
 (
     id                uuid not null default gen_random_uuid(),
-    image_link        text not null,
+    image_path        text not null,
     comment           text null,
     tattoo_project_id uuid null default gen_random_uuid (),
     constraint tattoo_references_pkey primary key (id),

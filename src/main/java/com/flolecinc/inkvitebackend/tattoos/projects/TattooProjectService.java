@@ -2,7 +2,6 @@ package com.flolecinc.inkvitebackend.tattoos.projects;
 
 import com.flolecinc.inkvitebackend.tattoos.artists.TattooArtistEntity;
 import com.flolecinc.inkvitebackend.tattoos.clients.TattooClientEntity;
-import com.flolecinc.inkvitebackend.tattoos.requestforms.RequestFormDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,16 +13,12 @@ public class TattooProjectService {
     private TattooProjectRepository tattooProjectRepository;
 
     @Transactional
-    public TattooProjectEntity saveProjectFromProjectDetails(RequestFormDto.ProjectDetailsDto projectDetails,
-                                                             TattooArtistEntity tattooArtist,
-                                                             TattooClientEntity tattooClient) {
-        TattooProjectEntity project = new TattooProjectEntity();
-        project.setDesiredDate(projectDetails.getDesiredDate());
-        project.setProjectDescription(projectDetails.getProjectDescription());
-        project.setBodyPart(projectDetails.getBodyPart());
-        project.setTattooArtist(tattooArtist);
-        project.setTattooClient(tattooClient);
-        return tattooProjectRepository.save(project);
+    public TattooProjectEntity bindEntitiesAndSaveProject(TattooProjectEntity tattooProject,
+                                                          TattooArtistEntity tattooArtist,
+                                                          TattooClientEntity tattooClient) {
+        tattooProject.setTattooArtist(tattooArtist);
+        tattooProject.setTattooClient(tattooClient);
+        return tattooProjectRepository.save(tattooProject);
     }
 
 }
