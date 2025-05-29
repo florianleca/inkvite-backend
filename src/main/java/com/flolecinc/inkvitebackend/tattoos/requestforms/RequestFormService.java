@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -27,12 +26,12 @@ public class RequestFormService {
     /**
      * Saving a new tattoo project (and associated references) after receiving a request form.
      *
-     * @param tattooArtistId The ID of the desired artist
+     * @param tattooArtistUsername The username of the desired artist
      * @param requestForm The request form that the client filled and sent
      */
     @Transactional
-    public void handleRequestForm(UUID tattooArtistId, RequestFormDto requestForm) {
-        TattooArtistEntity artist = tattooArtistService.retrieveTattooArtist(tattooArtistId);
+    public void handleRequestForm(String tattooArtistUsername, RequestFormDto requestForm) {
+        TattooArtistEntity artist = tattooArtistService.retrieveTattooArtistFromUsername(tattooArtistUsername);
 
         TattooClientEntity client = requestForm.getIdentity();
         client = tattooClientService.saveClient(client);

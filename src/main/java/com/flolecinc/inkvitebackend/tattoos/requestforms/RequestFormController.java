@@ -6,8 +6,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.UUID;
-
 @RestController
 @RequestMapping("/tattoos/requests")
 @AllArgsConstructor
@@ -15,11 +13,11 @@ public class RequestFormController {
 
     private RequestFormService requestFormService;
 
-    @PostMapping("/{tattooArtistId}")
+    @PostMapping("/{tattooArtistUsername}")
     public ResponseEntity<String> handleRequestForm(
-            @PathVariable UUID tattooArtistId,
+            @PathVariable String tattooArtistUsername,
             @RequestBody @Valid RequestFormDto requestForm) {
-        requestFormService.handleRequestForm(tattooArtistId, requestForm);
+        requestFormService.handleRequestForm(tattooArtistUsername, requestForm);
         return ResponseEntity.status(HttpStatus.CREATED).body("Tattoo project successfully created and saved");
     }
 

@@ -8,9 +8,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
-import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -23,30 +23,30 @@ class TattooArtistServiceTest {
     @InjectMocks
     private TattooArtistService tattooArtistService;
 
+    private static final String ARTIST_USERNAME = "artist_username";
+
     @Test
     void retrieveTattooArtist_artistExists_artistReturned() {
         // Given
-        UUID artistId = UUID.randomUUID();
         TattooArtistEntity artist = new TattooArtistEntity();
-        when(tattooArtistRepository.findById(artistId)).thenReturn(Optional.of(artist));
+        when(tattooArtistRepository.findByUsername(ARTIST_USERNAME)).thenReturn(Optional.of(artist));
 
         // When
-        TattooArtistEntity result = tattooArtistService.retrieveTattooArtist(artistId);
+        TattooArtistEntity result = tattooArtistService.retrieveTattooArtistFromUsername(ARTIST_USERNAME);
 
         // Then
         assertEquals(artist, result);
-        verify(tattooArtistRepository).findById(artistId);
+        verify(tattooArtistRepository).findByUsername(ARTIST_USERNAME);
     }
 
     @Test
     void retrieveTattooArtist_artistDoesntExist_emptyReturned() {
         // Given
-        UUID artistId = UUID.randomUUID();
-        when(tattooArtistRepository.findById(artistId)).thenReturn(Optional.empty());
+        when(tattooArtistRepository.findByUsername(ARTIST_USERNAME)).thenReturn(Optional.empty());
 
         // When & Then
-        assertThrows(TattooArtistNotFoundException.class, () -> tattooArtistService.retrieveTattooArtist(artistId));
-        verify(tattooArtistRepository).findById(artistId);
+        assertThrows(TattooArtistNotFoundException.class, () -> tattooArtistService.retrieveTattooArtistFromUsername(ARTIST_USERNAME));
+        verify(tattooArtistRepository).findByUsername(ARTIST_USERNAME);
     }
 
 }
