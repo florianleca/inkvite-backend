@@ -15,7 +15,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
-import java.util.UUID;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -38,12 +37,12 @@ class RequestFormServiceTest {
     @InjectMocks
     private RequestFormService requestFormService;
 
+    private static final String ARTIST_USERNAME = "artist_username";
+
     @Test
     void handleNewRequestForm_nominal_servicesCalled() {
         // Given
-        UUID artistId = UUID.randomUUID();
         TattooArtistEntity artist = new TattooArtistEntity();
-        artist.setId(artistId);
         RequestFormDto requestForm = new RequestFormDto();
         TattooReferenceEntity reference1 = new TattooReferenceEntity();
         TattooReferenceEntity reference2 = new TattooReferenceEntity();
@@ -52,15 +51,15 @@ class RequestFormServiceTest {
         requestForm.setIdentity(client);
         requestForm.setProjectDetails(project);
         project.setReferences(List.of(reference1, reference2));
-        when(tattooArtistService.retrieveTattooArtist(artistId)).thenReturn(artist);
+        when(tattooArtistService.retrieveTattooArtistFromUsername(ARTIST_USERNAME)).thenReturn(artist);
         when(tattooClientService.saveClient(client)).thenReturn(client);
         when(tattooProjectService.bindEntitiesAndSaveProject(project, artist, client)).thenReturn(project);
 
         // When
-        requestFormService.handleRequestForm(artistId, requestForm);
+        requestFormService.handleRequestForm(ARTIST_USERNAME, requestForm);
 
         // Then
-        verify(tattooArtistService).retrieveTattooArtist(artistId);
+        verify(tattooArtistService).retrieveTattooArtistFromUsername(ARTIST_USERNAME);
         verify(tattooClientService).saveClient(client);
         verify(tattooProjectService).bindEntitiesAndSaveProject(project, artist, client);
         verify(tattooReferenceService).bindReferencesToProjectAndSaveThem(List.of(reference1, reference2), project);

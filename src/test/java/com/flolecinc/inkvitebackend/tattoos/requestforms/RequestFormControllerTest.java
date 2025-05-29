@@ -43,6 +43,8 @@ class RequestFormControllerTest {
     @MockitoBean
     private RequestFormService requestFormService;
 
+    private static final String ARTIST_USERNAME = "artist_username";
+
     private static String jsonBody;
 
     @BeforeAll
@@ -53,16 +55,15 @@ class RequestFormControllerTest {
     @Test
     void postNewTattooRequest_nominal_serviceCalledAndStatusOk() throws Exception {
         // Given
-        UUID artistId = UUID.randomUUID();
         ArgumentCaptor<RequestFormDto> requestFormCaptor = ArgumentCaptor.forClass(RequestFormDto.class);
 
         // When & Then
-        mockMvc.perform(MockMvcRequestBuilders.post("/tattoos/requests/{tattooArtistId}", artistId)
+        mockMvc.perform(MockMvcRequestBuilders.post("/tattoos/requests/{tattooArtistUsername}", ARTIST_USERNAME)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonBody))
                 .andExpect(status().isCreated())
                 .andExpect(content().string("Tattoo project successfully created and saved"));
-        verify(requestFormService).handleRequestForm(eq(artistId), requestFormCaptor.capture());
+        verify(requestFormService).handleRequestForm(eq(ARTIST_USERNAME), requestFormCaptor.capture());
         RequestFormDto requestForm = requestFormCaptor.getValue();
         assertEquals("John", requestForm.getIdentity().getFirstName());
         assertEquals("Doe", requestForm.getIdentity().getLastName());
@@ -80,18 +81,16 @@ class RequestFormControllerTest {
     @Test
     void postNewTattooRequest_unknownArtist_exceptionHandledAndStatusNotFound() throws Exception {
         // Given
-        UUID artistId = UUID.randomUUID();
-        // Mocking a thrown exception for trying to retrieve an unknown tattoo artist
-        doThrow(new TattooArtistNotFoundException(artistId)).when(requestFormService).handleRequestForm(eq(artistId), any());
+        doThrow(new TattooArtistNotFoundException(ARTIST_USERNAME)).when(requestFormService).handleRequestForm(eq(ARTIST_USERNAME), any());
 
         // When & Then
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/tattoos/requests/{tattooArtistId}", artistId)
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/tattoos/requests/{tattooArtistUsername}", ARTIST_USERNAME)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonBody))
                 .andExpect(status().isNotFound())
                 .andReturn();
-        assertEquals("{\"error\":\"Tattoo artist with ID " + artistId + " not found\"}", result.getResponse().getContentAsString());
-        verify(requestFormService).handleRequestForm(eq(artistId), any());
+        assertEquals("{\"error\":\"Tattoo artist with username 'artist_username' not found\"}", result.getResponse().getContentAsString());
+        verify(requestFormService).handleRequestForm(eq(ARTIST_USERNAME), any());
     }
 
     @Test
