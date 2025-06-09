@@ -34,6 +34,18 @@ public class GlobalExceptionHandler {
                 .body(createErrorBody(exception));
     }
 
+    @ExceptionHandler(ImageUploadException.class)
+    public ResponseEntity<Map<String, String>> handleImageUploadException(ImageUploadException exception) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(createErrorBody(exception));
+    }
+
+    @ExceptionHandler(UnsupportedImageTypeException.class)
+    public ResponseEntity<Map<String, String>> handleUnsupportedImageTypeException(UnsupportedImageTypeException exception) {
+        return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
+                .body(createErrorBody(exception));
+    }
+
     private Map<String, String> createErrorBody(Exception exception) {
         return Map.of("error", exception.getMessage());
     }
