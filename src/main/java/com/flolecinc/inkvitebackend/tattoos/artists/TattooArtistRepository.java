@@ -7,8 +7,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface TattooArtistRepository extends JpaRepository<TattooArtistEntity, UUID> {
+public interface TattooArtistRepository extends JpaRepository<TattooArtist, UUID> {
 
-    Optional<TattooArtistEntity> findByUsername(String username);
+    Optional<TattooArtist> findByUsername(String username);
 
 }

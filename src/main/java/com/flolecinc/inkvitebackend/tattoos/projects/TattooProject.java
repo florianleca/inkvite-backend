@@ -1,8 +1,8 @@
 package com.flolecinc.inkvitebackend.tattoos.projects;
 
-import com.flolecinc.inkvitebackend.tattoos.artists.TattooArtistEntity;
-import com.flolecinc.inkvitebackend.tattoos.clients.TattooClientEntity;
-import com.flolecinc.inkvitebackend.tattoos.references.TattooReferenceEntity;
+import com.flolecinc.inkvitebackend.tattoos.artists.TattooArtist;
+import com.flolecinc.inkvitebackend.tattoos.clients.TattooClient;
+import com.flolecinc.inkvitebackend.tattoos.references.TattooReference;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -19,7 +19,7 @@ import java.util.UUID;
 @Table(name = "tattoo_projects", schema = "public")
 @Getter
 @Setter
-public class TattooProjectEntity {
+public class TattooProject {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -41,14 +41,14 @@ public class TattooProjectEntity {
     @Valid
     @NotEmpty
     @OneToMany(mappedBy = "tattooProject", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<TattooReferenceEntity> references;
+    private List<TattooReference> references;
 
     @ManyToOne
     @JoinColumn(name = "tattoo_client_id", nullable = false)
-    private TattooClientEntity tattooClient;
+    private TattooClient tattooClient;
 
     @ManyToOne
     @JoinColumn(name = "tattoo_artist_id", nullable = false)
-    private TattooArtistEntity tattooArtist;
+    private TattooArtist tattooArtist;
 
 }

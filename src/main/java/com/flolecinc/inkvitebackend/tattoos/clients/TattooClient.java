@@ -1,6 +1,6 @@
 package com.flolecinc.inkvitebackend.tattoos.clients;
 
-import com.flolecinc.inkvitebackend.tattoos.projects.TattooProjectEntity;
+import com.flolecinc.inkvitebackend.tattoos.projects.TattooProject;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -16,7 +16,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
-public class TattooClientEntity {
+public class TattooClient {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -37,6 +37,6 @@ public class TattooClientEntity {
     private String email;
 
     @OneToMany(mappedBy = "tattooClient", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<TattooProjectEntity> projects;
+    private List<TattooProject> projects;
 
 }
