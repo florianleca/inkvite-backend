@@ -1,7 +1,7 @@
 package com.flolecinc.inkvitebackend.tattoos.projects;
 
-import com.flolecinc.inkvitebackend.tattoos.artists.TattooArtistEntity;
-import com.flolecinc.inkvitebackend.tattoos.clients.TattooClientEntity;
+import com.flolecinc.inkvitebackend.tattoos.artists.TattooArtist;
+import com.flolecinc.inkvitebackend.tattoos.clients.TattooClient;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -23,9 +23,9 @@ class TattooProjectServiceTest {
     @Test
     void saveClientFromIdentity_nominal_repositoryCalled() {
         // Given
-        TattooProjectEntity project = new TattooProjectEntity();
-        TattooArtistEntity artist = new TattooArtistEntity();
-        TattooClientEntity client = new TattooClientEntity();
+        TattooProject project = new TattooProject();
+        TattooArtist artist = new TattooArtist();
+        TattooClient client = new TattooClient();
 
         // When
         tattooProjectService.bindEntitiesAndSaveProject(project, artist, client);

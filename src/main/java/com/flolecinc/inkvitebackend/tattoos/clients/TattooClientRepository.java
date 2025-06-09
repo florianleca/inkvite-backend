@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
 @Repository
-public interface TattooClientRepository extends JpaRepository<TattooClientEntity, UUID> {
+public interface TattooClientRepository extends JpaRepository<TattooClient, UUID> {
 }

@@ -2,8 +2,8 @@ package com.flolecinc.inkvitebackend.tattoos.requestforms;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flolecinc.inkvitebackend.exceptions.TattooArtistNotFoundException;
-import com.flolecinc.inkvitebackend.tattoos.projects.TattooProjectEntity;
-import com.flolecinc.inkvitebackend.tattoos.references.TattooReferenceEntity;
+import com.flolecinc.inkvitebackend.tattoos.projects.TattooProject;
+import com.flolecinc.inkvitebackend.tattoos.references.TattooReference;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -145,7 +145,7 @@ class RequestFormControllerTest {
     void postNewTattooRequest_nullProjectDetailsFields_exceptionHandledAndStatusBadRequest() throws Exception {
         // Given
         RequestFormDto requestFormDto = objectMapper.readValue(jsonBody, RequestFormDto.class);
-        requestFormDto.setProjectDetails(new TattooProjectEntity());
+        requestFormDto.setProjectDetails(new TattooProject());
         String badJson = objectMapper.writeValueAsString(requestFormDto);
 
         // When & Then
@@ -160,7 +160,7 @@ class RequestFormControllerTest {
     void postNewTattooRequest_blankReferenceFields_exceptionHandledAndStatusBadRequest() throws Exception {
         // Given
         RequestFormDto requestFormDto = objectMapper.readValue(jsonBody, RequestFormDto.class);
-        requestFormDto.getProjectDetails().setReferences(List.of(new TattooReferenceEntity()));
+        requestFormDto.getProjectDetails().setReferences(List.of(new TattooReference()));
         String badJson = objectMapper.writeValueAsString(requestFormDto);
         // When & Then
         invalidRequestHelper(badJson, "{\"projectDetails.references[0].imagePath\":\"must not be blank\"");

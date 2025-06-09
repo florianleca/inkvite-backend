@@ -34,6 +34,30 @@ public class GlobalExceptionHandler {
                 .body(createErrorBody(exception));
     }
 
+    @ExceptionHandler(FileReaderException.class)
+    public ResponseEntity<Map<String, String>> handleImageUploadException(FileReaderException exception) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(createErrorBody(exception));
+    }
+
+    @ExceptionHandler(UnsupportedImageTypeException.class)
+    public ResponseEntity<Map<String, String>> handleUnsupportedImageTypeException(UnsupportedImageTypeException exception) {
+        return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
+                .body(createErrorBody(exception));
+    }
+
+    @ExceptionHandler(S3UploadException.class)
+    public ResponseEntity<Map<String, String>> handleS3UploadException(S3UploadException exception) {
+        return ResponseEntity.status(HttpStatus.valueOf(exception.getStatusCode()))
+                .body(createErrorBody(exception));
+    }
+
+    @ExceptionHandler(InvalidDownloadURLException.class)
+    public ResponseEntity<Map<String, String>> handleInvalidDownloadURLException(InvalidDownloadURLException exception) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(createErrorBody(exception));
+    }
+
     private Map<String, String> createErrorBody(Exception exception) {
         return Map.of("error", exception.getMessage());
     }
