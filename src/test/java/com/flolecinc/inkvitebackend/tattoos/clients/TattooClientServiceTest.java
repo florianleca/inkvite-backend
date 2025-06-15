@@ -20,7 +20,7 @@ class TattooClientServiceTest {
     @Test
     void saveClientFromIdentity_nominal_repositoryCalled() {
         // Given
-        TattooClientEntity client = new TattooClientEntity();
+        TattooClient client = new TattooClient();
 
         // When
         tattooClientService.saveClient(client);

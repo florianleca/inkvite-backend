@@ -1,6 +1,6 @@
 package com.flolecinc.inkvitebackend.tattoos.references;
 
-import com.flolecinc.inkvitebackend.tattoos.projects.TattooProjectEntity;
+import com.flolecinc.inkvitebackend.tattoos.projects.TattooProject;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
@@ -14,7 +14,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
-public class TattooReferenceEntity {
+public class TattooReference {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -30,6 +30,6 @@ public class TattooReferenceEntity {
 
     @ManyToOne
     @JoinColumn(name = "tattoo_project_id", nullable = false)
-    private TattooProjectEntity tattooProject;
+    private TattooProject tattooProject;
 
 }
