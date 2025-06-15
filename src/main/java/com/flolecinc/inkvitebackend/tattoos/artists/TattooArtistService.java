@@ -10,7 +10,7 @@ public class TattooArtistService {
 
     private TattooArtistRepository tattooArtistRepository;
 
-    public TattooArtistEntity retrieveTattooArtistFromUsername(String tattooArtistUsername) {
+    public TattooArtist retrieveTattooArtistFromUsername(String tattooArtistUsername) {
         return tattooArtistRepository.findByUsername(tattooArtistUsername).orElseThrow(
                 () -> new TattooArtistNotFoundException(tattooArtistUsername)
         );

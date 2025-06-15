@@ -1,7 +1,7 @@
 package com.flolecinc.inkvitebackend.tattoos.requestforms;
 
-import com.flolecinc.inkvitebackend.tattoos.clients.TattooClientEntity;
-import com.flolecinc.inkvitebackend.tattoos.projects.TattooProjectEntity;
+import com.flolecinc.inkvitebackend.tattoos.clients.TattooClient;
+import com.flolecinc.inkvitebackend.tattoos.projects.TattooProject;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -17,10 +17,10 @@ public class RequestFormDto {
 
     @Valid
     @NotNull
-    private TattooClientEntity identity;
+    private TattooClient identity;
 
     @Valid
     @NotNull
-    private TattooProjectEntity projectDetails;
+    private TattooProject projectDetails;
 
 }

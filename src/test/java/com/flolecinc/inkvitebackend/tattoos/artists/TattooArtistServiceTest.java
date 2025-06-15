@@ -28,11 +28,11 @@ class TattooArtistServiceTest {
     @Test
     void retrieveTattooArtist_artistExists_artistReturned() {
         // Given
-        TattooArtistEntity artist = new TattooArtistEntity();
+        TattooArtist artist = new TattooArtist();
         when(tattooArtistRepository.findByUsername(ARTIST_USERNAME)).thenReturn(Optional.of(artist));
 
         // When
-        TattooArtistEntity result = tattooArtistService.retrieveTattooArtistFromUsername(ARTIST_USERNAME);
+        TattooArtist result = tattooArtistService.retrieveTattooArtistFromUsername(ARTIST_USERNAME);
 
         // Then
         assertEquals(artist, result);

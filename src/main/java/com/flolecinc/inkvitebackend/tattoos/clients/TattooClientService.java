@@ -11,7 +11,7 @@ public class TattooClientService {
     private TattooClientRepository tattooClientRepository;
 
     @Transactional
-    public TattooClientEntity saveClient(TattooClientEntity client) {
+    public TattooClient saveClient(TattooClient client) {
         return tattooClientRepository.save(client);
     }
 

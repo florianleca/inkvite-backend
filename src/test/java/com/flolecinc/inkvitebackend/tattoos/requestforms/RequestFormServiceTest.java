@@ -1,12 +1,12 @@
 package com.flolecinc.inkvitebackend.tattoos.requestforms;
 
-import com.flolecinc.inkvitebackend.tattoos.artists.TattooArtistEntity;
+import com.flolecinc.inkvitebackend.tattoos.artists.TattooArtist;
 import com.flolecinc.inkvitebackend.tattoos.artists.TattooArtistService;
-import com.flolecinc.inkvitebackend.tattoos.clients.TattooClientEntity;
+import com.flolecinc.inkvitebackend.tattoos.clients.TattooClient;
 import com.flolecinc.inkvitebackend.tattoos.clients.TattooClientService;
-import com.flolecinc.inkvitebackend.tattoos.projects.TattooProjectEntity;
+import com.flolecinc.inkvitebackend.tattoos.projects.TattooProject;
 import com.flolecinc.inkvitebackend.tattoos.projects.TattooProjectService;
-import com.flolecinc.inkvitebackend.tattoos.references.TattooReferenceEntity;
+import com.flolecinc.inkvitebackend.tattoos.references.TattooReference;
 import com.flolecinc.inkvitebackend.tattoos.references.TattooReferenceService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -42,12 +42,12 @@ class RequestFormServiceTest {
     @Test
     void handleNewRequestForm_nominal_servicesCalled() {
         // Given
-        TattooArtistEntity artist = new TattooArtistEntity();
+        TattooArtist artist = new TattooArtist();
         RequestFormDto requestForm = new RequestFormDto();
-        TattooReferenceEntity reference1 = new TattooReferenceEntity();
-        TattooReferenceEntity reference2 = new TattooReferenceEntity();
-        TattooClientEntity client = new TattooClientEntity();
-        TattooProjectEntity project = new TattooProjectEntity();
+        TattooReference reference1 = new TattooReference();
+        TattooReference reference2 = new TattooReference();
+        TattooClient client = new TattooClient();
+        TattooProject project = new TattooProject();
         requestForm.setIdentity(client);
         requestForm.setProjectDetails(project);
         project.setReferences(List.of(reference1, reference2));

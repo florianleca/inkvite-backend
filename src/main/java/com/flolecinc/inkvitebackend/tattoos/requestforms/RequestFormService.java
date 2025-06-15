@@ -1,12 +1,12 @@
 package com.flolecinc.inkvitebackend.tattoos.requestforms;
 
-import com.flolecinc.inkvitebackend.tattoos.artists.TattooArtistEntity;
+import com.flolecinc.inkvitebackend.tattoos.artists.TattooArtist;
 import com.flolecinc.inkvitebackend.tattoos.artists.TattooArtistService;
-import com.flolecinc.inkvitebackend.tattoos.clients.TattooClientEntity;
+import com.flolecinc.inkvitebackend.tattoos.clients.TattooClient;
 import com.flolecinc.inkvitebackend.tattoos.clients.TattooClientService;
-import com.flolecinc.inkvitebackend.tattoos.projects.TattooProjectEntity;
+import com.flolecinc.inkvitebackend.tattoos.projects.TattooProject;
 import com.flolecinc.inkvitebackend.tattoos.projects.TattooProjectService;
-import com.flolecinc.inkvitebackend.tattoos.references.TattooReferenceEntity;
+import com.flolecinc.inkvitebackend.tattoos.references.TattooReference;
 import com.flolecinc.inkvitebackend.tattoos.references.TattooReferenceService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -31,15 +31,15 @@ public class RequestFormService {
      */
     @Transactional
     public void handleRequestForm(String tattooArtistUsername, RequestFormDto requestForm) {
-        TattooArtistEntity artist = tattooArtistService.retrieveTattooArtistFromUsername(tattooArtistUsername);
+        TattooArtist artist = tattooArtistService.retrieveTattooArtistFromUsername(tattooArtistUsername);
 
-        TattooClientEntity client = requestForm.getIdentity();
+        TattooClient client = requestForm.getIdentity();
         client = tattooClientService.saveClient(client);
 
-        TattooProjectEntity project = requestForm.getProjectDetails();
+        TattooProject project = requestForm.getProjectDetails();
         project = tattooProjectService.bindEntitiesAndSaveProject(project, artist, client);
 
-        List<TattooReferenceEntity> referenceDtos = requestForm.getProjectDetails().getReferences();
+        List<TattooReference> referenceDtos = requestForm.getProjectDetails().getReferences();
         tattooReferenceService.bindReferencesToProjectAndSaveThem(referenceDtos, project);
     }
 
