@@ -1,4 +1,4 @@
-package com.flolecinc.inkvitebackend.file.manager;
+package com.flolecinc.inkvitebackend.file;
 
 import com.flolecinc.inkvitebackend.exceptions.S3UploadException;
 import lombok.RequiredArgsConstructor;

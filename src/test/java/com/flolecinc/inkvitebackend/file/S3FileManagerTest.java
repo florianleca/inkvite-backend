@@ -1,4 +1,4 @@
-package com.flolecinc.inkvitebackend.file.manager;
+package com.flolecinc.inkvitebackend.file;
 
 import com.flolecinc.inkvitebackend.exceptions.S3UploadException;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,7 +16,8 @@ import software.amazon.awssdk.services.s3.model.PutObjectResponse;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class S3FileManagerTest {
@@ -69,9 +70,7 @@ class S3FileManagerTest {
                 .thenReturn(mockResponse);
 
         // When & Then
-        S3UploadException exception = assertThrows(S3UploadException.class, () -> {
-            s3S3FileManager.uploadFileToServer(FILE_NAME, FILE_BYTES, CONTENT_TYPE);
-        });
+        S3UploadException exception = assertThrows(S3UploadException.class, () -> s3S3FileManager.uploadFileToServer(FILE_NAME, FILE_BYTES, CONTENT_TYPE));
         assertEquals("Failed to upload a file to the S3 server: Internal Server Error", exception.getMessage());
     }
 

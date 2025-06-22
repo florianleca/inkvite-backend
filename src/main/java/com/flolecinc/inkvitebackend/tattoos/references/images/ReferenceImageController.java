@@ -16,12 +16,6 @@ public class ReferenceImageController {
 
     private final ReferenceImageService referenceImageService;
 
-    @PostMapping("/upload-from-url")
-    public ResponseEntity<TempImageDto> uploadImageFromUrl(@RequestParam("url") String url) {
-        TempImageDto tempImage = referenceImageService.uploadImageFromUrl(url);
-        return ResponseEntity.ok(tempImage);
-    }
-
     @PostMapping(value = "/upload-from-device", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<TempImageDto> uploadImageFromDevice(@RequestParam("file") MultipartFile file) {
         TempImageDto tempImage = referenceImageService.uploadImageFromDevice(file);
