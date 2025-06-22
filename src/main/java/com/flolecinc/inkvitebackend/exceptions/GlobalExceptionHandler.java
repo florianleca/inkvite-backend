@@ -52,12 +52,6 @@ public class GlobalExceptionHandler {
                 .body(createErrorBody(exception));
     }
 
-    @ExceptionHandler(InvalidDownloadURLException.class)
-    public ResponseEntity<Map<String, String>> handleInvalidDownloadURLException(InvalidDownloadURLException exception) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(createErrorBody(exception));
-    }
-
     private Map<String, String> createErrorBody(Exception exception) {
         return Map.of("error", exception.getMessage());
     }

@@ -1,4 +1,4 @@
-package com.flolecinc.inkvitebackend.file.manager;
+package com.flolecinc.inkvitebackend.file;
 
 public interface FileManager {
 
