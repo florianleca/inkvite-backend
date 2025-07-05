@@ -16,7 +16,7 @@ public class RequestFormController {
     @PostMapping("/{tattooArtistUsername}")
     public ResponseEntity<String> handleRequestForm(
             @PathVariable String tattooArtistUsername,
-            @RequestBody @Valid RequestFormDto requestForm) {
+            @RequestBody @Valid RequestFormDTO requestForm) {
         requestFormService.handleRequestForm(tattooArtistUsername, requestForm);
         return ResponseEntity.status(HttpStatus.CREATED).body("Tattoo project successfully created and saved");
     }
