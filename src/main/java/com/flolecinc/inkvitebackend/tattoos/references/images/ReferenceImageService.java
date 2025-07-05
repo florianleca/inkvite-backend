@@ -18,7 +18,7 @@ public class ReferenceImageService {
     private final FileManager fileManager;
     private final Tika tika;
 
-    public TempImageDto uploadImageFromDevice(MultipartFile file) {
+    public TempImageDTO uploadImageFromDevice(MultipartFile file) {
         byte[] imageBytes;
         try {
             imageBytes = file.getBytes();
@@ -28,14 +28,14 @@ public class ReferenceImageService {
         return uploadImage(imageBytes);
     }
 
-    public TempImageDto uploadImage(byte[] imageBytes) {
+    public TempImageDTO uploadImage(byte[] imageBytes) {
         String imageName = String.valueOf(UUID.randomUUID());
         String contentType = tika.detect(imageBytes);
         if (!contentType.startsWith("image/")) {
             throw new UnsupportedImageTypeException(contentType);
         }
         String imageUrl = fileManager.uploadFileToServer(imageName, imageBytes, contentType);
-        return new TempImageDto(imageName, imageUrl);
+        return new TempImageDTO(imageName, imageUrl);
     }
 
 }

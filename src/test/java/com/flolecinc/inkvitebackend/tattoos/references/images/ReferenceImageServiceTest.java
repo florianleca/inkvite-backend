@@ -40,7 +40,7 @@ class ReferenceImageServiceTest {
         when(fileManager.uploadFileToServer(anyString(), eq(MOCK_IMAGE_BYTES), eq("image/jpeg"))).thenReturn(S3_IMAGE_URL);
 
         // When
-        TempImageDto result = referenceImageService.uploadImageFromDevice(MOCK_MULTIPART_FILE);
+        TempImageDTO result = referenceImageService.uploadImageFromDevice(MOCK_MULTIPART_FILE);
 
         // Then
         assertNotNull(result);

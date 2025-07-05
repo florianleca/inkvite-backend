@@ -33,11 +33,11 @@ class ReferenceImageControllerTest {
     @MockitoBean
     private ReferenceImageService referenceImageService;
 
-    private TempImageDto s3TempImage;
+    private TempImageDTO s3TempImage;
 
     @BeforeEach
     void setUp() {
-        s3TempImage = new TempImageDto(S3_IMAGE_PATH, S3_IMAGE_URL);
+        s3TempImage = new TempImageDTO(S3_IMAGE_PATH, S3_IMAGE_URL);
     }
 
     @Test

@@ -2,8 +2,8 @@ package com.flolecinc.inkvitebackend.tattoos.requestforms;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flolecinc.inkvitebackend.exceptions.TattooArtistNotFoundException;
-import com.flolecinc.inkvitebackend.tattoos.projects.TattooProject;
-import com.flolecinc.inkvitebackend.tattoos.references.TattooReference;
+import com.flolecinc.inkvitebackend.tattoos.projects.TattooProjectDTO;
+import com.flolecinc.inkvitebackend.tattoos.references.TattooReferenceDTO;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -55,7 +55,7 @@ class RequestFormControllerTest {
     @Test
     void postNewTattooRequest_nominal_serviceCalledAndStatusOk() throws Exception {
         // Given
-        ArgumentCaptor<RequestFormDto> requestFormCaptor = ArgumentCaptor.forClass(RequestFormDto.class);
+        ArgumentCaptor<RequestFormDTO> requestFormCaptor = ArgumentCaptor.forClass(RequestFormDTO.class);
 
         // When & Then
         mockMvc.perform(MockMvcRequestBuilders.post("/tattoos/requests/{tattooArtistUsername}", ARTIST_USERNAME)
@@ -64,7 +64,7 @@ class RequestFormControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(content().string("Tattoo project successfully created and saved"));
         verify(requestFormService).handleRequestForm(eq(ARTIST_USERNAME), requestFormCaptor.capture());
-        RequestFormDto requestForm = requestFormCaptor.getValue();
+        RequestFormDTO requestForm = requestFormCaptor.getValue();
         assertEquals("John", requestForm.getIdentity().getFirstName());
         assertEquals("Doe", requestForm.getIdentity().getLastName());
         assertEquals("john.doe@aol.com", requestForm.getIdentity().getEmail());
@@ -120,7 +120,7 @@ class RequestFormControllerTest {
     @Test
     void postNewTattooRequest_nullRootFields_exceptionHandledAndStatusBadRequest() throws Exception {
         // Given
-        String badJson = objectMapper.writeValueAsString(new RequestFormDto());
+        String badJson = objectMapper.writeValueAsString(new RequestFormDTO());
 
         // When & Then
         invalidRequestHelper(badJson, "\"identity\":\"must not be null\"", "\"projectDetails\":\"must not be null\"");
@@ -144,9 +144,9 @@ class RequestFormControllerTest {
     @Test
     void postNewTattooRequest_nullProjectDetailsFields_exceptionHandledAndStatusBadRequest() throws Exception {
         // Given
-        RequestFormDto requestFormDto = objectMapper.readValue(jsonBody, RequestFormDto.class);
-        requestFormDto.setProjectDetails(new TattooProject());
-        String badJson = objectMapper.writeValueAsString(requestFormDto);
+        RequestFormDTO requestFormDTO = objectMapper.readValue(jsonBody, RequestFormDTO.class);
+        requestFormDTO.setProjectDetails(new TattooProjectDTO());
+        String badJson = objectMapper.writeValueAsString(requestFormDTO);
 
         // When & Then
         invalidRequestHelper(badJson,
@@ -159,9 +159,9 @@ class RequestFormControllerTest {
     @Test
     void postNewTattooRequest_blankReferenceFields_exceptionHandledAndStatusBadRequest() throws Exception {
         // Given
-        RequestFormDto requestFormDto = objectMapper.readValue(jsonBody, RequestFormDto.class);
-        requestFormDto.getProjectDetails().setReferences(List.of(new TattooReference()));
-        String badJson = objectMapper.writeValueAsString(requestFormDto);
+        RequestFormDTO requestFormDTO = objectMapper.readValue(jsonBody, RequestFormDTO.class);
+        requestFormDTO.getProjectDetails().setReferences(List.of(new TattooReferenceDTO()));
+        String badJson = objectMapper.writeValueAsString(requestFormDTO);
         // When & Then
         invalidRequestHelper(badJson, "{\"projectDetails.references[0].imagePath\":\"must not be blank\"");
     }

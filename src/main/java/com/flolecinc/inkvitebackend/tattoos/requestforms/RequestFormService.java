@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -27,20 +28,23 @@ public class RequestFormService {
      * Saving a new tattoo project (and associated references) after receiving a request form.
      *
      * @param tattooArtistUsername The username of the desired artist
-     * @param requestForm The request form that the client filled and sent
+     * @param requestFormDTO The request form that the client filled and sent
      */
     @Transactional
-    public void handleRequestForm(String tattooArtistUsername, RequestFormDto requestForm) {
+    public void handleRequestForm(String tattooArtistUsername, RequestFormDTO requestFormDTO) {
         TattooArtist artist = tattooArtistService.retrieveTattooArtistFromUsername(tattooArtistUsername);
 
-        TattooClient client = requestForm.getIdentity();
+        TattooClient client = new TattooClient(requestFormDTO.getIdentity());
         client = tattooClientService.saveClient(client);
 
-        TattooProject project = requestForm.getProjectDetails();
+        TattooProject project = new TattooProject(requestFormDTO.getProjectDetails());
         project = tattooProjectService.bindEntitiesAndSaveProject(project, artist, client);
 
-        List<TattooReference> referenceDtos = requestForm.getProjectDetails().getReferences();
-        tattooReferenceService.bindReferencesToProjectAndSaveThem(referenceDtos, project);
+        List<TattooReference> references = requestFormDTO.getProjectDetails().getReferences()
+                .stream()
+                .map(TattooReference::new)
+                .collect(Collectors.toList());
+        tattooReferenceService.bindReferencesToProjectAndSaveThem(references, project);
     }
 
 }

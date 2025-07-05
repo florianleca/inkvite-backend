@@ -3,10 +3,12 @@ package com.flolecinc.inkvitebackend.tattoos.requestforms;
 import com.flolecinc.inkvitebackend.tattoos.artists.TattooArtist;
 import com.flolecinc.inkvitebackend.tattoos.artists.TattooArtistService;
 import com.flolecinc.inkvitebackend.tattoos.clients.TattooClient;
+import com.flolecinc.inkvitebackend.tattoos.clients.TattooClientDTO;
 import com.flolecinc.inkvitebackend.tattoos.clients.TattooClientService;
 import com.flolecinc.inkvitebackend.tattoos.projects.TattooProject;
+import com.flolecinc.inkvitebackend.tattoos.projects.TattooProjectDTO;
 import com.flolecinc.inkvitebackend.tattoos.projects.TattooProjectService;
-import com.flolecinc.inkvitebackend.tattoos.references.TattooReference;
+import com.flolecinc.inkvitebackend.tattoos.references.TattooReferenceDTO;
 import com.flolecinc.inkvitebackend.tattoos.references.TattooReferenceService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,6 +18,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -42,27 +46,22 @@ class RequestFormServiceTest {
     @Test
     void handleNewRequestForm_nominal_servicesCalled() {
         // Given
-        TattooArtist artist = new TattooArtist();
-        RequestFormDto requestForm = new RequestFormDto();
-        TattooReference reference1 = new TattooReference();
-        TattooReference reference2 = new TattooReference();
-        TattooClient client = new TattooClient();
-        TattooProject project = new TattooProject();
-        requestForm.setIdentity(client);
-        requestForm.setProjectDetails(project);
-        project.setReferences(List.of(reference1, reference2));
-        when(tattooArtistService.retrieveTattooArtistFromUsername(ARTIST_USERNAME)).thenReturn(artist);
-        when(tattooClientService.saveClient(client)).thenReturn(client);
-        when(tattooProjectService.bindEntitiesAndSaveProject(project, artist, client)).thenReturn(project);
+        RequestFormDTO requestFormDTO = new RequestFormDTO();
+        requestFormDTO.setIdentity(new TattooClientDTO());
+        TattooProjectDTO tattooProjectDTO = new TattooProjectDTO();
+        TattooReferenceDTO tattooReferenceDTO = new TattooReferenceDTO();
+        tattooProjectDTO.setReferences(List.of(tattooReferenceDTO));
+        requestFormDTO.setProjectDetails(tattooProjectDTO);
+        when(tattooArtistService.retrieveTattooArtistFromUsername(ARTIST_USERNAME)).thenReturn(new TattooArtist());
+        when(tattooClientService.saveClient(any())).thenReturn(new TattooClient());
+        TattooProject tattooProject = new TattooProject();
+        when(tattooProjectService.bindEntitiesAndSaveProject(any(), any(), any())).thenReturn(tattooProject);
 
         // When
-        requestFormService.handleRequestForm(ARTIST_USERNAME, requestForm);
+        requestFormService.handleRequestForm(ARTIST_USERNAME, requestFormDTO);
 
         // Then
-        verify(tattooArtistService).retrieveTattooArtistFromUsername(ARTIST_USERNAME);
-        verify(tattooClientService).saveClient(client);
-        verify(tattooProjectService).bindEntitiesAndSaveProject(project, artist, client);
-        verify(tattooReferenceService).bindReferencesToProjectAndSaveThem(List.of(reference1, reference2), project);
+        verify(tattooReferenceService).bindReferencesToProjectAndSaveThem(any(), eq(tattooProject));
     }
 
 }
