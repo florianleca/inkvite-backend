@@ -10,9 +10,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.multipart.MultipartFile;
+import software.amazon.awssdk.services.s3.model.S3Object;
 
 import java.io.IOException;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -25,7 +30,7 @@ class ReferenceImageServiceTest {
     public static final MockMultipartFile MOCK_MULTIPART_FILE = new MockMultipartFile("file", "image.jpg", "image/jpeg", MOCK_IMAGE_BYTES);
 
     @Mock
-    private FileManager fileManager;
+    private FileManager<S3Object> fileManager;
 
     @Mock
     private Tika tika;
@@ -68,6 +73,31 @@ class ReferenceImageServiceTest {
         // When & Then
         UnsupportedImageTypeException exception = assertThrows(UnsupportedImageTypeException.class, () -> referenceImageService.uploadImage(MOCK_IMAGE_BYTES));
         assertEquals("Unsupported image type: text/plain", exception.getMessage());
+    }
+
+    @Test
+    void cleanTempImagesFolder_nominal() {
+        // Given
+        ReflectionTestUtils.setField(referenceImageService, "tempBucketMaxHours", 24);
+        S3Object s3ObjectOld1 = S3Object.builder()
+                .lastModified(Instant.now().minus(Duration.ofHours(26)))
+                .build();
+        S3Object s3ObjectOld2 = S3Object.builder()
+                .lastModified(Instant.now().minus(Duration.ofHours(25)))
+                .build();
+        S3Object s3ObjectNew = S3Object.builder()
+                .lastModified(Instant.now().minus(Duration.ofHours(23)))
+                .build();
+        when(fileManager.getFilesFromServer()).thenReturn(List.of(s3ObjectOld1, s3ObjectOld2, s3ObjectNew));
+
+        // When
+        int deletedCount = referenceImageService.cleanTempImagesFolder();
+
+        // Then
+        assertEquals(2, deletedCount);
+        verify(fileManager).deleteFileFromServer(s3ObjectOld1);
+        verify(fileManager).deleteFileFromServer(s3ObjectOld2);
+        verify(fileManager, times(0)).deleteFileFromServer(s3ObjectNew);
     }
 
 }
