@@ -1,6 +1,8 @@
 package com.flolecinc.inkvitebackend.file;
 
-public interface FileManager {
+import java.util.List;
+
+public interface FileManager<T> {
 
     /**
      * Uploads a file to a server and returns the URL of the uploaded file.
@@ -11,5 +13,9 @@ public interface FileManager {
      * @return the URL of the uploaded file
      */
     String uploadFileToServer(String fileName, byte[] fileBytes, String contentType);
+
+    List<T> getFilesFromServer();
+
+    void deleteFileFromServer(T file);
 
 }

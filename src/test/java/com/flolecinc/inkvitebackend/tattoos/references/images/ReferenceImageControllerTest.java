@@ -16,8 +16,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(ReferenceImageController.class)
 class ReferenceImageControllerTest {
@@ -91,6 +90,28 @@ class ReferenceImageControllerTest {
                 .andExpect(status().isIAmATeapot())
                 .andReturn();
         assertEquals("{\"error\":\"Failed to upload a file to the S3 server: teapot error\"}", result.getResponse().getContentAsString());
+    }
+
+    @Test
+    void cleanTempImagesFolder_nominal_serviceCalledAndStatusOk() throws Exception {
+        // Given
+        when(referenceImageService.cleanTempImagesFolder()).thenReturn(42);
+
+        // When & Then
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/references-images/clean-temp-folder"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("42 images deleted from temp folder"));
+    }
+
+    @Test
+    void cleanTempImagesFolder_oneImageDeleted_serviceCalledAndStatusOk() throws Exception {
+        // Given
+        when(referenceImageService.cleanTempImagesFolder()).thenReturn(1);
+
+        // When & Then
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/references-images/clean-temp-folder"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("1 image deleted from temp folder"));
     }
 
 }
